@@ -26,6 +26,11 @@ func (this *CommandCreateParkingLot) ParseArgs(args string) error {
 	return nil
 }
 
+func (this *CommandCreateParkingLot) Clear() {
+	this.Args = nil
+	this.Capacity = 0
+}
+
 func (this *CommandCreateParkingLot) ValidateParams() bool {
 	return len(this.Args) == 1
 }
@@ -36,6 +41,6 @@ func (this *CommandCreateParkingLot) Run() (string, error) {
 	if obj == nil {
 		return output, fmt.Errorf("Error")
 	}
-	output = fmt.Sprintf("\x1b[32;1mCreated a parking lot with %d slots\x1b[0m", this.Capacity)
+	output = fmt.Sprintf("Created a parking lot with %d slots", this.Capacity)
 	return output, nil
 }

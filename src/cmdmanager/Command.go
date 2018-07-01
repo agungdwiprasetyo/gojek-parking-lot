@@ -3,42 +3,44 @@ package cmdmanager
 import (
 	"fmt"
 	"strings"
+
+	parking "../parking"
 )
 
 type MenuCommand interface {
 	ParseArgs(string) error
+	Clear()
 	ValidateParams() bool
 	Run() (string, error)
 }
 
 type Command struct {
-	Args    []string
-	Manager map[string]MenuCommand
+	Args []string
+	Menu map[string]MenuCommand
 }
 
 var (
-	errInvalidParam = fmt.Errorf("command: invalid parameter(s), please provide valid input")
+	errInvalidParam         = fmt.Errorf("command: invalid parameter(s), please provide valid input")
+	errParkingNotInitialize = fmt.Errorf("parking: please create_parking_lot first")
 )
 
 func InitCommand() *Command {
 	cmd := new(Command)
-	cmd.Manager = make(map[string]MenuCommand)
-	cmd.Manager["create_parking_lot"] = new(CommandCreateParkingLot)
+	cmd.Menu = make(map[string]MenuCommand)
+	cmd.Menu["create_parking_lot"] = new(CommandCreateParkingLot)
+	cmd.Menu["park"] = new(CommandPark)
 	return cmd
-}
-
-func (this *Command) Clear() {
-	this.Args = []string{}
 }
 
 func (this *Command) Run(command string) string {
 	cmds := strings.SplitN(command, " ", 2)
 	menu := cmds[0]
-	cmdChild, ok := this.Manager[menu]
+	cmdChild, ok := this.Menu[menu]
 	if cmdChild == nil || !ok {
 		return fmt.Sprintf("\x1b[31;1m%s: command not found\x1b[0m", menu)
 	}
-	this.Clear()
+
+	cmdChild.Clear()
 
 	// capture command argument(s)
 	if len(cmds) > 1 {
@@ -48,6 +50,11 @@ func (this *Command) Run(command string) string {
 	valid := cmdChild.ValidateParams()
 	if !valid {
 		return fmt.Sprintf("\x1b[31;1m%s: invalid parameter(s), please provide valid input\x1b[0m", menu)
+	}
+
+	park := parking.Get()
+	if park == nil {
+		return fmt.Sprintf("\x1b[31;1m%v\x1b[0m", errParkingNotInitialize)
 	}
 
 	output, err := cmdChild.Run()
