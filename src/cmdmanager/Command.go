@@ -32,6 +32,8 @@ func InitCommand() *Command {
 	cmd.Menu["leave"] = new(CommandLeave)
 	cmd.Menu["status"] = new(CommandStatus)
 	cmd.Menu["registration_numbers_for_cars_with_colour"] = new(CommandRegistrationNumber)
+	cmd.Menu["slot_numbers_for_cars_with_colour"] = new(CommandSlotNumberCarColor)
+	cmd.Menu["slot_number_for_registration_number"] = new(CommandSlotNumberCarNumber)
 	return cmd
 }
 
@@ -56,7 +58,7 @@ func (this *Command) Run(command string) string {
 	}
 
 	park := parking.Get()
-	if park == nil {
+	if park == nil && menu != "create_parking_lot" {
 		return fmt.Sprintf("\x1b[31;1m%v\x1b[0m", errParkingNotInitialize)
 	}
 
