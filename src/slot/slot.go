@@ -3,30 +3,38 @@ package slot
 import (
 	"fmt"
 
-	vehicle "../vehicle"
+	car "../car"
 )
 
 type Slot struct {
-	Index   uint
-	Vehicle *vehicle.Vehicle
+	Index uint
+	Car   *car.Car
 }
 
 func New() *Slot {
 	return &Slot{}
 }
 
-func (this *Slot) Allocate(vh vehicle.Vehicle) error {
-	if this.Vehicle != nil {
+func (this *Slot) Allocate(cr car.Car) error {
+	if this.Car != nil {
 		return fmt.Errorf("slot: Slot already allocated")
 	}
-	this.Vehicle = &vh
+	this.Car = &cr
 	return nil
 }
 
+func (this *Slot) GetCarNumber() string {
+	return this.Car.Number
+}
+
+func (this *Slot) GetCarColor() string {
+	return this.Car.Color
+}
+
 func (this *Slot) Free() {
-	this.Vehicle = nil
+	this.Car = nil
 }
 
 func (this *Slot) IsFree() bool {
-	return this.Vehicle == nil
+	return this.Car == nil
 }

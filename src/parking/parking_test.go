@@ -4,8 +4,8 @@ import (
 	"reflect"
 	"testing"
 
+	car "../car"
 	slot "../slot"
-	vehicle "../vehicle"
 )
 
 func TestNew(t *testing.T) {
@@ -25,16 +25,16 @@ func TestNew(t *testing.T) {
 				Capacity: 3,
 				Slots: []*slot.Slot{
 					{
-						Index:   1,
-						Vehicle: nil,
+						Index: 1,
+						Car:   nil,
 					},
 					{
-						Index:   2,
-						Vehicle: nil,
+						Index: 2,
+						Car:   nil,
 					},
 					{
-						Index:   3,
-						Vehicle: nil,
+						Index: 3,
+						Car:   nil,
 					},
 				},
 			},
@@ -66,22 +66,22 @@ func TestParking_FindNearestSlot(t *testing.T) {
 				Capacity: 3,
 				Slots: []*slot.Slot{
 					{
-						Index:   1,
-						Vehicle: nil,
+						Index: 1,
+						Car:   nil,
 					},
 					{
-						Index:   2,
-						Vehicle: &vehicle.Vehicle{Number: "BE4508GE", Color: "Red"},
+						Index: 2,
+						Car:   &car.Car{Number: "BE4508GE", Color: "Red"},
 					},
 					{
-						Index:   3,
-						Vehicle: nil,
+						Index: 3,
+						Car:   nil,
 					},
 				},
 			},
 			&slot.Slot{
-				Index:   1,
-				Vehicle: nil,
+				Index: 1,
+				Car:   nil,
 			},
 			false,
 		},
@@ -91,22 +91,22 @@ func TestParking_FindNearestSlot(t *testing.T) {
 				Capacity: 3,
 				Slots: []*slot.Slot{
 					{
-						Index:   1,
-						Vehicle: &vehicle.Vehicle{Number: "BE4508GE", Color: "Red"},
+						Index: 1,
+						Car:   &car.Car{Number: "BE4508GE", Color: "Red"},
 					},
 					{
-						Index:   2,
-						Vehicle: nil,
+						Index: 2,
+						Car:   nil,
 					},
 					{
-						Index:   3,
-						Vehicle: nil,
+						Index: 3,
+						Car:   nil,
 					},
 				},
 			},
 			&slot.Slot{
-				Index:   2,
-				Vehicle: nil,
+				Index: 2,
+				Car:   nil,
 			},
 			false,
 		},
@@ -129,13 +129,13 @@ func TestParking_FindNearestSlot(t *testing.T) {
 	}
 }
 
-func TestParking_AddVehicle(t *testing.T) {
+func TestParking_AddCar(t *testing.T) {
 	type fields struct {
 		Capacity uint
 		Slots    []*slot.Slot
 	}
 	type args struct {
-		vh vehicle.Vehicle
+		cr car.Car
 	}
 	tests := []struct {
 		name    string
@@ -150,23 +150,23 @@ func TestParking_AddVehicle(t *testing.T) {
 				Capacity: 3,
 				Slots: []*slot.Slot{
 					{
-						Index:   1,
-						Vehicle: nil,
+						Index: 1,
+						Car:   nil,
 					},
 					{
-						Index:   2,
-						Vehicle: nil,
+						Index: 2,
+						Car:   nil,
 					},
 					{
-						Index:   3,
-						Vehicle: nil,
+						Index: 3,
+						Car:   nil,
 					},
 				},
 			},
-			args{vh: vehicle.Vehicle{Number: "BE4508GE", Color: "Red"}},
+			args{cr: car.Car{Number: "BE4508GE", Color: "Red"}},
 			&slot.Slot{
-				Index:   1,
-				Vehicle: &vehicle.Vehicle{Number: "BE4508GE", Color: "Red"},
+				Index: 1,
+				Car:   &car.Car{Number: "BE4508GE", Color: "Red"},
 			},
 			false,
 		},
@@ -176,20 +176,20 @@ func TestParking_AddVehicle(t *testing.T) {
 				Capacity: 3,
 				Slots: []*slot.Slot{
 					{
-						Index:   1,
-						Vehicle: &vehicle.Vehicle{Number: "BE1000GE", Color: "Red"},
+						Index: 1,
+						Car:   &car.Car{Number: "BE1000GE", Color: "Red"},
 					},
 					{
-						Index:   2,
-						Vehicle: &vehicle.Vehicle{Number: "BE2000GE", Color: "Red"},
+						Index: 2,
+						Car:   &car.Car{Number: "BE2000GE", Color: "Red"},
 					},
 					{
-						Index:   3,
-						Vehicle: &vehicle.Vehicle{Number: "BE3000GE", Color: "Red"},
+						Index: 3,
+						Car:   &car.Car{Number: "BE3000GE", Color: "Red"},
 					},
 				},
 			},
-			args{vh: vehicle.Vehicle{Number: "BE4508GE", Color: "Red"}},
+			args{cr: car.Car{Number: "BE4508GE", Color: "Red"}},
 			nil,
 			true,
 		},
@@ -200,13 +200,13 @@ func TestParking_AddVehicle(t *testing.T) {
 				Capacity: tt.fields.Capacity,
 				Slots:    tt.fields.Slots,
 			}
-			got, err := this.AddVehicle(tt.args.vh)
+			got, err := this.AddCar(tt.args.cr)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("Parking.AddVehicle() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Parking.AddCar() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Parking.AddVehicle() = %v, want %v", got, tt.want)
+				t.Errorf("Parking.AddCar() = %v, want %v", got, tt.want)
 			}
 		})
 	}

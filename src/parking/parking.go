@@ -2,9 +2,10 @@ package parking
 
 import (
 	"fmt"
+	"strings"
 
+	car "../car"
 	slot "../slot"
-	vehicle "../vehicle"
 )
 
 type Parking struct {
@@ -26,7 +27,7 @@ func New(capacity uint) *Parking {
 		parking.Slots[i] = &slot.Slot{Index: uint(idx)}
 		idx++
 	}
-	saved = parking
+	parking.Save()
 	return parking
 }
 
@@ -48,37 +49,53 @@ func (this *Parking) FindNearestSlot() (*slot.Slot, error) {
 	return nil, fmt.Errorf("Sorry, parking lot is full")
 }
 
-func (this *Parking) AddVehicle(vh vehicle.Vehicle) (*slot.Slot, error) {
+func (this *Parking) AddCar(cr car.Car) (*slot.Slot, error) {
 	sl, err := this.FindNearestSlot()
 	if err != nil {
 		return nil, err
 	}
-	if err := sl.Allocate(vh); err != nil {
+	if err := sl.Allocate(cr); err != nil {
 		return nil, err
 	}
 	return sl, nil
 }
 
-func (this *Parking) RemoveVehicle(vh vehicle.Vehicle) {
+func (this *Parking) RemoveCar(cr car.Car) {
 	for i, sl := range this.Slots {
-		if sl.Vehicle != nil && sl.Vehicle.IsEqual(vh) {
+		if !sl.IsFree() && sl.Car.IsEqual(cr) {
 			this.Slots[i].Free()
 		}
 	}
 }
 
-func (this *Parking) GetFilledSlots() []*slot.Slot {
-	var filledSlots []*slot.Slot
+func (this *Parking) GetFilledSlots() (filledSlots []*slot.Slot) {
 	for _, sl := range this.Slots {
 		if !sl.IsFree() {
 			filledSlots = append(filledSlots, sl)
 		}
 	}
-	return filledSlots
+	return
 }
 
-func (this *Parking) RemoveVehicleBySlot(slotNumber uint) {
-	this.Slots[slotNumber-1].Vehicle = nil
+func (this *Parking) GetSlotsByCarColor(carColor string) (slots []*slot.Slot) {
+	for _, sl := range this.Slots {
+		if !sl.IsFree() {
+			if strings.ToLower(sl.GetCarColor()) == strings.ToLower(carColor) {
+				slots = append(slots, sl)
+			}
+		}
+	}
+	return
+}
+
+func (this *Parking) RemoveCarBySlot(slotNumber uint) error {
+	for i, sl := range this.Slots {
+		if sl.Index == slotNumber {
+			this.Slots[i].Car = nil
+			return nil
+		}
+	}
+	return fmt.Errorf("Slot %d not found", slotNumber)
 }
 
 func (this *Parking) RemoveSlot() {
