@@ -24,7 +24,7 @@ func (this *CommandStatus) ValidateParams() bool {
 }
 
 func (this *CommandStatus) Run() (string, error) {
-	var list = []string{fmt.Sprintf("%-12s%-20s%-10s", "Slot No.", "Registration No", "Color")}
+	var list = []string{fmt.Sprintf("%-12s%-20s%-10s", "Slot No.", "Registration No", "Colour")}
 	filledSlots := parking.Get().GetFilledSlots()
 	for _, sl := range filledSlots {
 		cr := sl.Car
