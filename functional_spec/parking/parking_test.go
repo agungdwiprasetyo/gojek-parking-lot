@@ -19,7 +19,7 @@ func TestNew(t *testing.T) {
 		want *Parking
 	}{
 		{
-			"TestCase 1: ",
+			"TestCase 1: Create with capacity=3 produce 3 slots with Index 1 to 3 and null Car",
 			args{capacity: 3},
 			&Parking{
 				Capacity: 3,
@@ -61,7 +61,7 @@ func TestParking_FindNearestSlot(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			"TestCase 1",
+			"TestCase 1. Find nearest free slot with nearest filled slot in index 2. Want slot with index=1",
 			fields{
 				Capacity: 3,
 				Slots: []*slot.Slot{

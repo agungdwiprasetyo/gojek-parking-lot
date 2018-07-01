@@ -7,6 +7,7 @@ import (
 	parking "../parking"
 )
 
+// MenuCommand is interface all registered command
 type MenuCommand interface {
 	ParseArgs(string) error
 	Clear()
@@ -14,6 +15,7 @@ type MenuCommand interface {
 	Run() (string, error)
 }
 
+// Command is object struct for manage command from user and control application
 type Command struct {
 	Args []string
 	Menu map[string]MenuCommand
@@ -24,6 +26,7 @@ var (
 	errParkingNotInitialize = fmt.Errorf("parking: please create_parking_lot first")
 )
 
+// InitCommand for register all command string for control this application
 func InitCommand() *Command {
 	cmd := new(Command)
 	cmd.Menu = make(map[string]MenuCommand)
@@ -37,6 +40,7 @@ func InitCommand() *Command {
 	return cmd
 }
 
+// Run command with parameter string entered by user
 func (this *Command) Run(command string) string {
 	cmds := strings.SplitN(command, " ", 2)
 	menu := cmds[0]
@@ -45,6 +49,7 @@ func (this *Command) Run(command string) string {
 		return fmt.Sprintf("\x1b[31;1m%s: command not found\x1b[0m", menu)
 	}
 
+	// clearing command argument(s)
 	cmdChild.Clear()
 
 	// capture command argument(s)
