@@ -60,14 +60,6 @@ func (this *Parking) AddCar(cr car.Car) (*slot.Slot, error) {
 	return sl, nil
 }
 
-func (this *Parking) RemoveCar(cr car.Car) {
-	for i, sl := range this.Slots {
-		if !sl.IsFree() && sl.Car.IsEqual(cr) {
-			this.Slots[i].Free()
-		}
-	}
-}
-
 func (this *Parking) GetFilledSlots() (filledSlots []*slot.Slot) {
 	for _, sl := range this.Slots {
 		if !sl.IsFree() {
@@ -88,6 +80,26 @@ func (this *Parking) GetSlotsByCarColor(carColor string) (slots []*slot.Slot) {
 	return
 }
 
+func (this *Parking) GetSlotByCarNumber(carNumber string) (slots *slot.Slot) {
+	for _, sl := range this.Slots {
+		if !sl.IsFree() {
+			if sl.GetCarNumber() == carNumber {
+				slots = sl
+				return
+			}
+		}
+	}
+	return
+}
+
+func (this *Parking) RemoveCar(cr car.Car) {
+	for i, sl := range this.Slots {
+		if !sl.IsFree() && sl.Car.IsEqual(cr) {
+			this.Slots[i].Free()
+		}
+	}
+}
+
 func (this *Parking) RemoveCarBySlot(slotNumber uint) error {
 	for i, sl := range this.Slots {
 		if sl.Index == slotNumber {
@@ -96,8 +108,4 @@ func (this *Parking) RemoveCarBySlot(slotNumber uint) error {
 		}
 	}
 	return fmt.Errorf("Slot %d not found", slotNumber)
-}
-
-func (this *Parking) RemoveSlot() {
-
 }

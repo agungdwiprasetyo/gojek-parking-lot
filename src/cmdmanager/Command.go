@@ -29,6 +29,9 @@ func InitCommand() *Command {
 	cmd.Menu = make(map[string]MenuCommand)
 	cmd.Menu["create_parking_lot"] = new(CommandCreateParkingLot)
 	cmd.Menu["park"] = new(CommandPark)
+	cmd.Menu["leave"] = new(CommandLeave)
+	cmd.Menu["status"] = new(CommandStatus)
+	cmd.Menu["registration_numbers_for_cars_with_colour"] = new(CommandRegistrationNumber)
 	return cmd
 }
 
