@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo "Testing command manager component..."
+cd ../functional_spec/cmdmanager
+go test -v
+
+echo "Testing car component..."
+cd ../car
+go test -v
+
+echo "Testing slot component..."
+cd ../slot
+go test -v
+
+echo "Testing parking component..."
+cd ../parking
+go test -v

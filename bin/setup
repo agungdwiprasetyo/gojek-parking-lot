@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Building binary file..."
+go build ../functional_spec/main.go
+
+echo "Run unit testing..."
+./run_functional_tests
