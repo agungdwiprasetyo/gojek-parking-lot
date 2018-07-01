@@ -6,6 +6,7 @@ import (
 	car "../car"
 )
 
+// Slot is a cleared area that is intended for parking car, with identity serial index number.
 type Slot struct {
 	Index uint
 	Car   *car.Car

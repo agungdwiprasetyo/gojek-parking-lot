@@ -2,7 +2,7 @@ package car
 
 import "strings"
 
-// Car is object for
+// Car is a basic object. Car will fill a slot and reduce parking lot slot capacity.
 type Car struct {
 	Number string
 	Color  string

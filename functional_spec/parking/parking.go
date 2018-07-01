@@ -8,6 +8,7 @@ import (
 	slot "../slot"
 )
 
+// Parking is main component, for data structure a parking lot
 type Parking struct {
 	Capacity uint
 	Slots    []*slot.Slot
